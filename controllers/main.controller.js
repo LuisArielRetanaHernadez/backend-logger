@@ -104,13 +104,13 @@ class MainController {
 
 			const aplication = new Aplications({name})
 
-			aplication.save()
+			await aplication.save()
 
 			// singToken
 			const token = singJWT({ name, id: aplication._id })
 
 			const authorization = new Authorizations({
-				_id: aplication._id,
+				application_id: aplication._id,
 				token: token
 			})
 
@@ -133,11 +133,11 @@ class MainController {
 	async createLog(req, res, next) {
 
 		try {
-			const idAplication = req.currentAplication.tokenIs.id
-
+			const idAplication = req.currentAplication.tokenIs.data.id
+			console.log(idAplication)
 			const log = new Log({
 				...req.body,
-				aplication_id: idAplication
+				application_id: idAplication
 			})
 
 			await log.save()
