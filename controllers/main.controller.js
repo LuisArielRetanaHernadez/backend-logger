@@ -1,7 +1,48 @@
 /* eslint-disable no-unused-vars */
 'use strinct';
+// Schema
+const Aplications = require('../schema/aplications.schema')
 
+// utils
+const {singJWT} = require('../utils/singJWT')
+
+// Controller
 class MainController {
+
+	async login(req, res, next) {
+		try {
+			const {name} = req.bdoy
+
+			if (name){
+				return res.status(404).json({
+					message: 'name is required'
+				}
+				)
+			}
+
+			const aplication = await Aplications.findOne({name})
+			
+			if (!aplication) {
+				return res.status(404).json({
+					message: 'aplication not found'
+				})
+			}
+
+			// Sing JWT, valid for 1 hour
+			const token = await singJWT({name}, '2min')
+
+			return res.status(200).json({
+				message: 'seccion successfully',
+				token
+			})
+
+
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
+	}
 
 	all(req, res, next) {
 		res.json({ message: 'Example request.' });
