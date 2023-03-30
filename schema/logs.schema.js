@@ -13,7 +13,7 @@ const logsSchema = new Schema({
     enum: ['error','warning','info']
   },
   priority: {
-    type: String(),
+    type: String,
     enum: ['lowest','low','medium','high','highest']
   },
   path: {
