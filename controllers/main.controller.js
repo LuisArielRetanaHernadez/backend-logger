@@ -2,7 +2,7 @@
 'use strinct';
 // Schema
 const Aplications = require('../schema/aplications.schema')
-
+const Log = require('../schema/logs.schema')
 // utils
 const {singJWT} = require('../utils/singJWT')
 
@@ -46,8 +46,29 @@ class MainController {
 		}
 	}
 
-	all(req, res, next) {
-		res.json({ message: 'Example request.' });
+	async all(req, res, next) {
+		try {
+			const logFinds = await Log.find({}).populate('aplication')
+
+			if (!logFinds || logFinds.length === 0) {
+				return res.status(404).json({
+					message: 'logs not found'
+				})
+			} 
+
+			return res.status(200).json({
+				message: 'logs successfully',
+				totalLogs: logFinds.length,
+				data: {
+					info:  logFinds
+				}
+			})
+		}
+		catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
 	}
 
 	create(req, res, next) {
