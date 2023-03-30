@@ -102,7 +102,7 @@ class MainController {
 			const token = singJWT({ name, id: aplication._id })
 
 			const authorization = new Authorizations({
-				application_id: aplication._id,
+				_id: aplication._id,
 				token: token
 			})
 
