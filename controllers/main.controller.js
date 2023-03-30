@@ -11,7 +11,7 @@ class MainController {
 
 	async login(req, res, next) {
 		try {
-			const {name} = req.bdoy
+			const {name} = req.body
 
 			if (name){
 				return res.status(404).json({
