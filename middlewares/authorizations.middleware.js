@@ -3,7 +3,7 @@ const Authorizations = require('../schema/authorizations.schema')
 
 class AuthorizationService {
 
-  async findAllAuthorizations(req, res, next) {
+  async protect(req, res, next) {
     const { token } = req.currentToken
 
     const authorizationFind = await Authorizations.find({ token })
@@ -18,7 +18,7 @@ class AuthorizationService {
 
   }
 
-  async protectId(req, res, next) {
+  async protectById(req, res, next) {
     const { id } = req.params
     const idToken = req.currentToken._id
     
