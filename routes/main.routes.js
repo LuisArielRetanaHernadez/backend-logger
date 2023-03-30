@@ -11,6 +11,7 @@ const AuthorizationService = require('../middlewares/authorizations.middleware')
 
 router.get(`/${prefix}/`, controller.all);
 router.post(`/${prefix}/`, controller.create);
+router.post(`/${prefix}/create`, authJWT, AuthorizationService.protect, controller.createLog);
 router.get(`/${prefix}/:id`, authJWT, AuthorizationService.protect, AuthorizationService.protectById, controller.info);
 router.put(`/${prefix}/:id`, authJWT, AuthorizationService.protect, AuthorizationService.protectById, controller.update);
 router.delete(`/${prefix}/:id`, authJWT, AuthorizationService.protect, AuthorizationService.protectById, controller.delete);
