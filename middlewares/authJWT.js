@@ -18,7 +18,7 @@ exports.authJWT = async (req, res, next) => {
     }
 
     req.currentAplication = {
-      tokenIs,
+      ...tokenIs,
       token
     }
 
