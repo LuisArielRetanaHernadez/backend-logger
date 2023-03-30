@@ -21,7 +21,8 @@ class AuthorizationService {
 
   async protectById(req, res, next) {
     const { id } = req.params
-    const idToken = req.currentToken._id
+    const idToken = req.currentAplication.data.id
+    console.log(req.currentAplication)
     
     if (id !== idToken) {
       return res.status(401).json({
@@ -43,7 +44,7 @@ class AuthorizationService {
 
   async protectLogById(req, res, next) {
     const { id } = req.params
-    const idAplication = req.currentAplication.tokenIs.data.id
+    const idAplication = req.currentAplication.data.id
 
     const finLog = await Log.findOne({application_id: idAplication, _id: id})
 
