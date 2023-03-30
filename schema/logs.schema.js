@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const logsSchema = new Schema({
   application_id: {
     type: mongoose.Types.ObjectId,
+    ref: 'application',
+    required: true
   },
   type: {
     type: String,
