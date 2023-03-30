@@ -51,8 +51,11 @@ class MainController {
 			const logFinds = await Log.find({}).populate('aplication')
 
 			if (!logFinds || logFinds.length === 0) {
-				return res.status(404).json({
-					message: 'logs not found'
+				return res.status(200).json({
+					message: 'logs not found',
+					data: {
+						info: []
+					}
 				})
 			} 
 
