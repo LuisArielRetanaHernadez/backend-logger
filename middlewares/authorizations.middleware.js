@@ -4,7 +4,7 @@ const Authorizations = require('../schema/authorizations.schema')
 class AuthorizationService {
 
   async protect(req, res, next) {
-    const { token } = req.currentToken
+    const { token } = req.currentAplication
 
     const authorizationFind = await Authorizations.find({ token })
 
