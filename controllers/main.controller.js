@@ -13,7 +13,7 @@ class MainController {
 		try {
 			const {name} = req.body
 
-			if (name){
+			if (!name){
 				return res.status(404).json({
 					message: 'name is required'
 				}
@@ -21,6 +21,8 @@ class MainController {
 			}
 
 			const aplication = await Aplications.findOne({name})
+
+			console.log(Boolean(aplication), ' ', aplication)
 			
 			if (!aplication) {
 				return res.status(404).json({
@@ -49,7 +51,42 @@ class MainController {
 	}
 
 	create(req, res, next) {
-		res.json({ message: 'Example request.' });
+		try {
+			const { name } = req.body
+			if (!name) {
+				return res.status(404).json({
+					message: 'name is required'
+				})
+			}
+
+			const findAplication = Aplications.findOne({name})
+
+			if (!findAplication) {
+				return res.status(404).json({
+					message: 'aplication not found'
+				})
+			}
+
+			// create Aplication
+
+			const aplication = new Aplications({name})
+
+			aplication.save()
+
+			return res.status(200).json({
+				message: 'seccion successfully',
+				data: {
+					aplication
+				}
+			})
+
+			// Sing JWT, valid for 1 hour
+
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message
+			})
+		}
 	}
 
 	info(req, res, next) {
