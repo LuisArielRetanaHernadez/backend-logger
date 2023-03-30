@@ -1,5 +1,6 @@
 // schema
 const Authorizations = require('../schema/authorizations.schema')
+const Log = require('../schema/logs.schema') 
 
 class AuthorizationService {
 
@@ -39,6 +40,23 @@ class AuthorizationService {
 
     return next()
   }
+
+  async protectLogById(req, res, next) {
+    const { id } = req.params
+    const idAplication = req.currentAplication.tokenIs.data.id
+
+    const finLog = await Log.findOne({application_id: idAplication, _id: id})
+
+    if (!finLog) {
+      return  res.status(404).json({
+        message: 'invalid credentials'
+      })
+    }
+
+    req.currentLog = finLog
+
+    return next()
+  } 
 }
 
 module.exports = new AuthorizationService()
