@@ -31,14 +31,21 @@ class MainController {
 				})
 			}
 
-			// Sing JWT, valid for 1 hour
-			const token = await singJWT({name}, '2min')
+			const authorization = await Authorizations.findOne({application_id: aplication._id})
+
+			if (!authorization) {
+				return res.status(404).json({
+					message: 'invalid authorization'
+				})
+			}
 
 			return res.status(200).json({
-				message: 'seccion successfully',
-				token
+				message: 'login successfully',
+				data: {
+					aplication,
+					token: authorization.token
+				}
 			})
-
 
 		} catch (error) {
 			return res.status(500).json({
