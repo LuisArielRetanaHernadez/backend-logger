@@ -130,10 +130,10 @@ class MainController {
 		}
 	}
 
-	info(req, res, next) {
+	async info(req, res, next) {
 		const { id } = req.params
 
-		const logFind = Log.findById(id)
+		const logFind = await Log.findById(id)
 
 		if (!logFind) {
 			return res.status(404).json({
@@ -151,12 +151,47 @@ class MainController {
 
 	}
 
-	update(req, res, next) {
-		res.json({ message: 'Example request.' });
+	async update(req, res, next) {
+		const { id } = req.params
+
+		const logFind = Log.findById(id)
+
+		if (!logFind) {
+			return res.status(404).json({
+				message: 'log not found'
+			})
+		}
+
+		await logFind.updateOne(req.body)
+
+		await logFind.save()
+
+		return res.status(200).json({
+			message: 'log successfully',
+			data: {
+				log:  logFind
+			}
+		})
+
 	}
 
-	delete(req, res, next) {
-		res.json({ message: 'Example request.' });
+	async delete(req, res, next) {
+		const { id } = req.params
+
+		const logFind = await Log.findById(id)
+
+		if (!logFind) {
+			return res.status(404).json({
+				message: 'log not found'
+			})
+		}
+
+		await logFind.deleteOne()
+
+		return res.status(200).json({
+			message: 'log deleted successfully',
+		})
+	
 	}
 }
 
