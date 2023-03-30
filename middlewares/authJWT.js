@@ -1,5 +1,5 @@
 // singJWT
-const { verifyJWT } = require('./singJWT')
+const { verifyJWT } = require('../utils/singJWT')
 
 exports.authJWT = async (req, res, next) => {
   try {
