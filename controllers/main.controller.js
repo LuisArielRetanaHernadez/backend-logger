@@ -48,6 +48,7 @@ class MainController {
 			})
 
 		} catch (error) {
+
 			return res.status(500).json({
 				message: error.message
 			})
@@ -130,7 +131,24 @@ class MainController {
 	}
 
 	info(req, res, next) {
-		res.json({ message: 'Example request.' });
+		const { id } = req.params
+
+		const logFind = Log.findById(id)
+
+		if (!logFind) {
+			return res.status(404).json({
+				message: 'log not found'
+			})
+		
+		}
+
+		return res.status(200).json({
+			message: 'log successfully',
+			data: {
+				log:  logFind
+			}
+		})
+
 	}
 
 	update(req, res, next) {
