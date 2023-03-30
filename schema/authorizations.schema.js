@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const authorizationModel = new Schema({
   application_id: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'application',
+    required: true,
   },
   token: {
     type: String,
