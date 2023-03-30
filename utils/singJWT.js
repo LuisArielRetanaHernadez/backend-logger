@@ -7,3 +7,7 @@ exports.singJWT = (data, expiresIn) => {
   
   return jwt.sign({data}, process.env.JWT_SECRET, {expiresIn: expiresInIs})
 }
+
+exports.verifyJWT = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
