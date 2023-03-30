@@ -3,6 +3,7 @@
 // Schema
 const Aplications = require('../schema/aplications.schema')
 const Log = require('../schema/logs.schema')
+const Authorizations = require('../schema/authorizations.schema')
 // utils
 const {singJWT} = require('../utils/singJWT')
 
@@ -74,7 +75,7 @@ class MainController {
 		}
 	}
 
-	create(req, res, next) {
+	async create(req, res, next) {
 		try {
 			const { name } = req.body
 			if (!name) {
@@ -97,14 +98,22 @@ class MainController {
 
 			aplication.save()
 
+			// singToken
+			const token = singJWT({ name, id: aplication._id })
+
+			const authorization = new Authorizations({
+				application_id: aplication._id,
+				token: token
+			})
+
+			await authorization.save()
+
 			return res.status(200).json({
 				message: 'seccion successfully',
 				data: {
 					aplication
 				}
 			})
-
-			// Sing JWT, valid for 1 hour
 
 		} catch (error) {
 			return res.status(500).json({
