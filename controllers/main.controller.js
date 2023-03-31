@@ -54,31 +54,20 @@ class MainController {
 	async all(req, res, next) {
 		const idAplication = req.currentAplication.data.id
 		
-		try {
-			const logFinds = await Log.find({application_id: idAplication})
+		const logFinds = await Log.find({application_id: idAplication})
 
-			if (!logFinds || logFinds.length === 0) {
-				return res.status(200).json({
-					message: 'logs not found',
-					data: {
-						info: []
-					}
-				})
-			} 
+		if (!logFinds || logFinds.length === 0) {
+			return next(new AppError('logs not found', 404))
+		} 
 
-			return res.status(200).json({
-				message: 'logs successfully',
-				totalLogs: logFinds.length,
-				data: {
-					info:  logFinds
-				}
-			})
-		}
-		catch (error) {
-			return res.status(500).json({
-				message: error.message
-			})
-		}
+		return res.status(200).json({
+			message: 'logs successfully',
+			totalLogs: logFinds.length,
+			data: {
+				info:  logFinds
+			}
+		})
+
 	}
 
 	async create(req, res, next) {
