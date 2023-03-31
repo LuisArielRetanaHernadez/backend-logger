@@ -145,9 +145,7 @@ class MainController {
 		const logFind = req.currentLog
 
 		if (!logFind) {
-			return res.status(404).json({
-				message: 'log not found'
-			})
+			return next(new AppError('log not found', 404))
 		}
 
 		await logFind.updateOne({...req.body, updated_at: new Date})
