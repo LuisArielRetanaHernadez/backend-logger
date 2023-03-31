@@ -3,6 +3,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+// middlewares
+const { globalError } = require('./middlewares/globalError.middleware')
+
 const app = express();
 
 app.use(logger('dev'));
@@ -12,5 +15,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', require('./routes/main.routes'));
+app.use(globalError)
 
 module.exports = app;
