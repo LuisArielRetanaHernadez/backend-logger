@@ -71,50 +71,36 @@ class MainController {
 	}
 
 	async create(req, res, next) {
-		try {
-			const { name } = req.body
-			if (!name) {
-				return res.status(404).json({
-					message: 'name is required'
-				})
-			}
+		const { name } = req.body
+		const findAplication = Aplications.findOne({name})
 
-			const findAplication = Aplications.findOne({name})
-
-			if (!findAplication) {
-				return res.status(404).json({
-					message: 'aplication not found'
-				})
-			}
+		if (!findAplication) {
+			return next(new AppError('aplication not found', 404))
+		}
 
 			// create Aplication
 
-			const aplication = new Aplications({name})
+		const aplication = new Aplications({name})
 
-			await aplication.save()
+		await aplication.save()
 
 			// singToken
-			const token = singJWT({ name, id: aplication._id })
+		const token = singJWT({ name, id: aplication._id })
 
-			const authorization = new Authorizations({
-				application_id: aplication._id,
-				token: token
-			})
+		const authorization = new Authorizations({
+			application_id: aplication._id,
+			token: token
+		})
 
-			await authorization.save()
+		await authorization.save()
 
-			return res.status(201).json({
-				message: 'seccion successfully',
-				data: {
-					aplication
-				}
-			})
+		return res.status(201).json({
+			message: 'seccion successfully',
+			data: {
+				aplication
+			}
+		})
 
-		} catch (error) {
-			return res.status(500).json({
-				message: error.message
-			})
-		}
 	}
 
 	async createLog(req, res, next) {
