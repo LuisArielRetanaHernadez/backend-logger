@@ -52,7 +52,7 @@ class MainController {
 	}
 
 	async all(req, res, next) {
-		const idAplication = req.currentAplication.data.id
+		const idAplication = req.currentAplication.id
 		
 		const logFinds = await Log.find({application_id: idAplication})
 
