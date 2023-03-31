@@ -167,9 +167,7 @@ class MainController {
 		const logFind = await Log.findById(id)
 
 		if (!logFind) {
-			return res.status(404).json({
-				message: 'log not found'
-			})
+			return next(new AppError('log not found', 404))
 		}
 
 		await logFind.deleteOne()
