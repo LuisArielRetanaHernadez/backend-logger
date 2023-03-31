@@ -4,8 +4,10 @@
 const Aplications = require('../schema/aplications.schema')
 const Log = require('../schema/logs.schema')
 const Authorizations = require('../schema/authorizations.schema')
+
 // utils
-const {singJWT} = require('../utils/singJWT')
+const { singJWT } = require('../utils/singJWT')
+const  AppError = require('../utils/AppError')
 
 // Controller
 class MainController {
@@ -24,17 +26,13 @@ class MainController {
 			const aplication = await Aplications.findOne({name})
 			
 			if (!aplication) {
-				return res.status(404).json({
-					message: 'aplication not found'
-				})
+				return next(new AppError('aplication not found', 404))
 			}
 
 			const authorization = await Authorizations.findOne({application_id: aplication._id})
 
 			if (!authorization) {
-				return res.status(404).json({
-					message: 'invalid authorization'
-				})
+				return next( new AppError('authorization not found', 404))
 			}
 
 			return res.status(200).json({
