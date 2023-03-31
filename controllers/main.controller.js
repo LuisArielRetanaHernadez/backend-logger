@@ -12,7 +12,7 @@ class MainController {
 
 	async login(req, res, next) {
 		try {
-			const {name} = req.body
+			const { name } = req.body
 
 			if (!name){
 				return res.status(404).json({
@@ -22,8 +22,6 @@ class MainController {
 			}
 
 			const aplication = await Aplications.findOne({name})
-
-			console.log(Boolean(aplication), ' ', aplication)
 			
 			if (!aplication) {
 				return res.status(404).json({
@@ -56,8 +54,10 @@ class MainController {
 	}
 
 	async all(req, res, next) {
+		const idAplication = req.currentAplication.data.id
+		
 		try {
-			const logFinds = await Log.find({}).populate('aplication')
+			const logFinds = await Log.find({application_id: idAplication})
 
 			if (!logFinds || logFinds.length === 0) {
 				return res.status(200).json({
@@ -116,7 +116,7 @@ class MainController {
 
 			await authorization.save()
 
-			return res.status(200).json({
+			return res.status(201).json({
 				message: 'seccion successfully',
 				data: {
 					aplication
@@ -133,16 +133,18 @@ class MainController {
 	async createLog(req, res, next) {
 
 		try {
-			const idAplication = req.currentAplication.tokenIs.data.id
-			console.log(idAplication)
+			const idAplication = req.currentAplication.id
+			
 			const log = new Log({
 				...req.body,
-				application_id: idAplication
+				application_id: idAplication,
+				created_at: new Date(),
+				updated_at: new Date()
 			})
 
 			await log.save()
 
-			return res.status(200).json({
+			return res.status(201).json({
 				message: 'log created successfully',
 				data: {
 					log
@@ -180,7 +182,8 @@ class MainController {
 
 		} catch (error) {
 			return res.status(500).json({
-				message: error.message
+				message: error.message,
+				stack:  error.stack
 			})
 
 		}
@@ -188,9 +191,7 @@ class MainController {
 	}
 
 	async update(req, res, next) {
-		const { id } = req.params
-
-		const logFind = Log.findById(id)
+		const logFind = req.currentLog
 
 		if (!logFind) {
 			return res.status(404).json({
@@ -198,14 +199,14 @@ class MainController {
 			})
 		}
 
-		await logFind.updateOne(req.body)
+		await logFind.updateOne({...req.body, updated_at: new Date})
 
-		await logFind.save()
+		logFind.save()
 
-		return res.status(200).json({
+		return res.status(202).json({
 			message: 'log successfully',
 			data: {
-				log:  logFind
+				logFind
 			}
 		})
 
@@ -224,7 +225,7 @@ class MainController {
 
 		await logFind.deleteOne()
 
-		return res.status(200).json({
+		return res.status(203).json({
 			message: 'log deleted successfully',
 		})
 	
