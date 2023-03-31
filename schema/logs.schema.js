@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const logsSchema = new Schema({
   application_id: {
     type: mongoose.Types.ObjectId,
-    ref: 'application',
+    ref: 'aplications',
     required: true
   },
   type: {
@@ -27,6 +27,15 @@ const logsSchema = new Schema({
   },
   response: {
     data: Schema.Types.Mixed
+  },
+  created_at: {
+    type:  Date,
+    default: Date.now,
+    inmutable: true
+  },
+  updated_at: {
+    type:  Date,
+    default: Date.now
   }
 })
 
