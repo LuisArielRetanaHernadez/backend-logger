@@ -6,7 +6,8 @@ const aplicationsSchema = new Schema({
   name: String,
   created_at: {
     type:  Date,
-    default: Date.now
+    default: Date.now,
+    inmutable: true
   },
   updated_at: {
     type:  Date,
@@ -14,6 +15,6 @@ const aplicationsSchema = new Schema({
   }
 })
 
-const Aplications = mongoose.model('Aplications', aplicationsSchema)
+const Aplications = mongoose.model('aplications', aplicationsSchema)
 
 module.exports = Aplications
