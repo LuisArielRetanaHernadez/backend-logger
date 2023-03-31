@@ -19,42 +19,19 @@ class AuthorizationService {
 
   }
 
-  async protectById(req, res, next) {
-    const { id } = req.params
-    const idToken = req.currentAplication.data.id
-    console.log(req.currentAplication)
-    
-    if (id !== idToken) {
-      return res.status(401).json({
-        message: 'invalid credentials'
-      })
-    }
-
-    const aplicationFind = await Authorizations.findById(id)
-
-    if (!aplicationFind) {
-      return res.status(404).json({
-        message: 'invalid credentials'
-      })
-    
-    }
-
-    return next()
-  }
-
   async protectLogById(req, res, next) {
     const { id } = req.params
-    const idAplication = req.currentAplication.data.id
+    const idAplication = req.currentAplication.id
 
-    const finLog = await Log.findOne({application_id: idAplication, _id: id})
+    const findLog = await Log.findOne({_id: id, application_id: idAplication})
 
-    if (!finLog) {
+    if (!findLog) {
       return  res.status(404).json({
-        message: 'invalid credentials'
+        message: 'log not found'
       })
     }
 
-    req.currentLog = finLog
+    req.currentLog = findLog
 
     return next()
   } 
