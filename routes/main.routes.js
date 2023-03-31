@@ -10,7 +10,7 @@ const { authJWT } = require('../middlewares/authJWT');
 const AuthorizationService = require('../middlewares/authorizations.middleware')
 
 // joi
-const {validator} = require('../joi/validator.joi')
+const { validator } = require('../joi/validator.joi')
 const { aplicationsJoi } = require('../joi/schema/log/aplications.joi')
 const { logsJoi } = require('../joi/schema/log/logs.joi')
 
