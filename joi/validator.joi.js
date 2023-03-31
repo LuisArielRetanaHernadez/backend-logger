@@ -1,10 +1,11 @@
+// utils
+const AppError = require('../utils/AppError');
+
 exports.validator = (schema) => {
   return (req, res, next) => {
     const { error } = schema.validate(req.body);
     if (error) {
-      return res.status(400).json({
-        message: error.message,
-      }).end();
+      return next(new AppError(error.message, 400));
     }
 
     return next();
