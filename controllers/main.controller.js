@@ -124,32 +124,20 @@ class MainController {
 	}
 
 	async info(req, res, next) {
-		try {
-			const { id } = req.params
+		const { id } = req.params
 
-			const logFind = await Log.findById(id)
+		const logFind = await Log.findById(id)
 
-			if (!logFind) {
-				return res.status(404).json({
-					message: 'log not found'
-				})
-			
-			}
-
-			return res.status(200).json({
-				message: 'log successfully',
-				data: {
-					log:  logFind
-				}
-			})
-
-		} catch (error) {
-			return res.status(500).json({
-				message: error.message,
-				stack:  error.stack
-			})
-
+		if (!logFind) {
+			return next(new AppError('log not found', 404))
 		}
+
+		return res.status(200).json({
+			message: 'log successfully',
+			data: {
+				log:  logFind
+			}
+		})
 		
 	}
 
