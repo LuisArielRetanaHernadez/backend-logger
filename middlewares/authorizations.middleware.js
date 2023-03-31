@@ -1,6 +1,9 @@
 // schema
 const Authorizations = require('../schema/authorizations.schema')
-const Log = require('../schema/logs.schema') 
+const Log = require('../schema/logs.schema')
+
+// utils
+const AppError = require('../utils/AppError')
 
 class AuthorizationService {
 
@@ -10,11 +13,9 @@ class AuthorizationService {
     const authorizationFind = await Authorizations.find({ token })
 
     if (!authorizationFind) {
-      return res.status(404).json({
-        message: 'invalid credentials'
-      })
+      return next( new AppError('invalid credentials', 404))
     }
-
+    
     return next()
 
   }
@@ -26,9 +27,7 @@ class AuthorizationService {
     const findLog = await Log.findOne({_id: id, application_id: idAplication})
 
     if (!findLog) {
-      return  res.status(404).json({
-        message: 'log not found'
-      })
+      return next( new AppError('log not found', 404))
     }
 
     req.currentLog = findLog
