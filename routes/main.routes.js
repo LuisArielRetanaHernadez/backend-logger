@@ -17,7 +17,7 @@ const { logsJoi } = require('../joi/schema/log/logs.joi')
 // utils
 const { tryCatch } = require('../utils/tryCatch')
 
-router.get(`/${prefix}/`, tryCatch(controller.all));
+router.get(`/${prefix}/`, authJWT, AuthorizationService.protect, tryCatch(controller.all));
 router.post(`/${prefix}/`, validator(aplicationsJoi), tryCatch(controller.create));
 router.post(`/${prefix}/create`, authJWT, AuthorizationService.protect, validator(logsJoi), tryCatch(controller.createLog));
 
