@@ -79,7 +79,6 @@ class MainController {
 		}
 
 			// create Aplication
-
 		const aplication = new Aplications({name})
 
 		await aplication.save()
@@ -104,32 +103,23 @@ class MainController {
 	}
 
 	async createLog(req, res, next) {
-
-		try {
-			const idAplication = req.currentAplication.id
+		const idAplication = req.currentAplication.id
 			
-			const log = new Log({
-				...req.body,
-				application_id: idAplication,
-				created_at: new Date(),
-				updated_at: new Date()
-			})
+		const log = new Log({
+			...req.body,
+			application_id: idAplication,
+			created_at: new Date(),
+			updated_at: new Date()
+		})
 
-			await log.save()
+		await log.save()
 
-			return res.status(201).json({
-				message: 'log created successfully',
-				data: {
-					log
-				}
-			})
-
-		} catch (error) {
-			return res.status(500).json({
-				message: error.message
-			})
-
-		}
+		return res.status(201).json({
+			message: 'log created successfully',
+			data: {
+				log
+			}
+		})
 	
 	}
 
