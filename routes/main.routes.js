@@ -22,7 +22,7 @@ router.post(`/${prefix}/`, validator(aplicationsJoi), tryCatch(controller.create
 router.post(`/${prefix}/create`, authJWT, AuthorizationService.protect, validator(logsJoi), tryCatch(controller.createLog));
 
 router.get(`/${prefix}/:id`, authJWT, AuthorizationService.protect, AuthorizationService.protectLogById, tryCatch(controller.info));
-router.put(`/${prefix}/:id`, authJWT, AuthorizationService.protect, AuthorizationService.protectLogById, tryCatch(controller.update));
+router.put(`/${prefix}/:id`, authJWT, AuthorizationService.protect, AuthorizationService.protectLogById, validator(logsJoi), tryCatch(controller.update));
 router.delete(`/${prefix}/:id`, authJWT, AuthorizationService.protect, AuthorizationService.protectLogById, tryCatch(controller.delete));
 
 router.post(`/${prefix}/login`, validator(aplicationsJoi), controller.login);
